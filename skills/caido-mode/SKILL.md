@@ -43,10 +43,10 @@ All traffic goes through Caido, so it appears in the UI for further analysis.
 3. Run:
 
 ```bash
-node ~/.claude/skills/caido-mode/caido-client.ts setup <your-pat>
+npx tsx ~/.claude/skills/caido-mode/caido-client.ts setup <your-pat>
 
 # Non-default Caido instance
-node ~/.claude/skills/caido-mode/caido-client.ts setup <pat> http://192.168.1.100:8080
+npx tsx ~/.claude/skills/caido-mode/caido-client.ts setup <pat> http://192.168.1.100:8080
 
 # Or set env var instead
 export CAIDO_PAT=caido_xxxxx
@@ -57,7 +57,7 @@ The `setup` command validates the PAT via the SDK (which exchanges it for an acc
 ### Check Status
 
 ```bash
-node ~/.claude/skills/caido-mode/caido-client.ts auth-status
+npx tsx ~/.claude/skills/caido-mode/caido-client.ts auth-status
 ```
 
 ### How Auth Works
@@ -77,26 +77,26 @@ Located at `~/.claude/skills/caido-mode/caido-client.ts`. All commands output JS
 ### search - Search HTTP history with HTTPQL
 
 ```bash
-node caido-client.ts search 'req.method.eq:"POST" AND resp.code.eq:200'
-node caido-client.ts search 'req.host.cont:"api"' --limit 50
-node caido-client.ts search 'req.path.cont:"/admin"' --ids-only
-node caido-client.ts search 'resp.raw.cont:"password"' --after <cursor>
+npx tsx caido-client.ts search 'req.method.eq:"POST" AND resp.code.eq:200'
+npx tsx caido-client.ts search 'req.host.cont:"api"' --limit 50
+npx tsx caido-client.ts search 'req.path.cont:"/admin"' --ids-only
+npx tsx caido-client.ts search 'resp.raw.cont:"password"' --after <cursor>
 ```
 
 ### recent - Get recent requests
 
 ```bash
-node caido-client.ts recent
-node caido-client.ts recent --limit 50
+npx tsx caido-client.ts recent
+npx tsx caido-client.ts recent --limit 50
 ```
 
 ### get / get-response - Retrieve full details
 
 ```bash
-node caido-client.ts get <request-id>
-node caido-client.ts get <request-id> --headers-only
-node caido-client.ts get-response <request-id>
-node caido-client.ts get-response <request-id> --compact
+npx tsx caido-client.ts get <request-id>
+npx tsx caido-client.ts get <request-id> --headers-only
+npx tsx caido-client.ts get-response <request-id>
+npx tsx caido-client.ts get-response <request-id> --compact
 ```
 
 ### edit - Edit and replay (KEY FEATURE)
@@ -105,20 +105,20 @@ Modifies an existing request while preserving all cookies/auth headers:
 
 ```bash
 # Change path (IDOR testing)
-node caido-client.ts edit <id> --path /api/user/999
+npx tsx caido-client.ts edit <id> --path /api/user/999
 
 # Change method and add body
-node caido-client.ts edit <id> --method POST --body '{"admin":true}'
+npx tsx caido-client.ts edit <id> --method POST --body '{"admin":true}'
 
 # Add/remove headers
-node caido-client.ts edit <id> --set-header "X-Forwarded-For: 127.0.0.1"
-node caido-client.ts edit <id> --remove-header "X-CSRF-Token"
+npx tsx caido-client.ts edit <id> --set-header "X-Forwarded-For: 127.0.0.1"
+npx tsx caido-client.ts edit <id> --remove-header "X-CSRF-Token"
 
 # Find/replace text anywhere in request
-node caido-client.ts edit <id> --replace "user123:::user456"
+npx tsx caido-client.ts edit <id> --replace "user123:::user456"
 
 # Combine multiple edits
-node caido-client.ts edit <id> --method PUT --path /api/admin --body '{"role":"admin"}' --compact
+npx tsx caido-client.ts edit <id> --method PUT --path /api/admin --body '{"role":"admin"}' --compact
 ```
 
 | Option | Description |
@@ -134,19 +134,19 @@ node caido-client.ts edit <id> --method PUT --path /api/admin --body '{"role":"a
 
 ```bash
 # Replay as-is
-node caido-client.ts replay <request-id>
+npx tsx caido-client.ts replay <request-id>
 
 # Replay with custom raw
-node caido-client.ts replay <id> --raw "GET /modified HTTP/1.1\r\nHost: example.com\r\n\r\n"
+npx tsx caido-client.ts replay <id> --raw "GET /modified HTTP/1.1\r\nHost: example.com\r\n\r\n"
 
 # Send completely custom request
-node caido-client.ts send-raw --host example.com --port 443 --tls --raw "GET / HTTP/1.1\r\nHost: example.com\r\n\r\n"
+npx tsx caido-client.ts send-raw --host example.com --port 443 --tls --raw "GET / HTTP/1.1\r\nHost: example.com\r\n\r\n"
 ```
 
 ### export-curl - Convert to curl for PoCs
 
 ```bash
-node caido-client.ts export-curl <request-id>
+npx tsx caido-client.ts export-curl <request-id>
 ```
 
 Outputs a ready-to-use curl command with all headers and body.
@@ -159,17 +159,17 @@ Outputs a ready-to-use curl command with all headers and body.
 
 ```bash
 # Create replay session from an existing request
-node caido-client.ts create-session <request-id>
+npx tsx caido-client.ts create-session <request-id>
 
 # ALWAYS rename sessions for easy identification in Caido UI
-node caido-client.ts rename-session <session-id> "idor-user-profile"
+npx tsx caido-client.ts rename-session <session-id> "idor-user-profile"
 
 # List all replay sessions
-node caido-client.ts replay-sessions
-node caido-client.ts replay-sessions --limit 50
+npx tsx caido-client.ts replay-sessions
+npx tsx caido-client.ts replay-sessions --limit 50
 
 # Delete replay sessions
-node caido-client.ts delete-sessions <session-id-1>,<session-id-2>
+npx tsx caido-client.ts delete-sessions <session-id-1>,<session-id-2>
 ```
 
 ### Collections
@@ -178,27 +178,27 @@ Organize replay sessions into collections:
 
 ```bash
 # List replay collections
-node caido-client.ts replay-collections
-node caido-client.ts replay-collections --limit 50
+npx tsx caido-client.ts replay-collections
+npx tsx caido-client.ts replay-collections --limit 50
 
 # Create a collection
-node caido-client.ts create-collection "IDOR Testing"
+npx tsx caido-client.ts create-collection "IDOR Testing"
 
 # Rename a collection
-node caido-client.ts rename-collection <collection-id> "Auth Bypass Tests"
+npx tsx caido-client.ts rename-collection <collection-id> "Auth Bypass Tests"
 
 # Delete a collection
-node caido-client.ts delete-collection <collection-id>
+npx tsx caido-client.ts delete-collection <collection-id>
 ```
 
 ### Fuzzing
 
 ```bash
 # Create automate session for fuzzing
-node caido-client.ts create-automate-session <request-id>
+npx tsx caido-client.ts create-automate-session <request-id>
 
 # Start fuzzing (configure payloads and markers in Caido UI first)
-node caido-client.ts fuzz <session-id>
+npx tsx caido-client.ts fuzz <session-id>
 ```
 
 ---
@@ -209,16 +209,16 @@ Define what's in scope for your testing. Uses glob patterns.
 
 ```bash
 # List all scopes
-node caido-client.ts scopes
+npx tsx caido-client.ts scopes
 
 # Create scope with allowlist and denylist
-node caido-client.ts create-scope "Target Corp" --allow "*.target.com,*.target.io" --deny "*.cdn.target.com"
+npx tsx caido-client.ts create-scope "Target Corp" --allow "*.target.com,*.target.io" --deny "*.cdn.target.com"
 
 # Update scope
-node caido-client.ts update-scope <scope-id> --allow "*.target.com,*.api.target.com"
+npx tsx caido-client.ts update-scope <scope-id> --allow "*.target.com,*.api.target.com"
 
 # Delete scope
-node caido-client.ts delete-scope <scope-id>
+npx tsx caido-client.ts delete-scope <scope-id>
 ```
 
 **Glob patterns:** `*.example.com` matches any subdomain of example.com.
@@ -231,17 +231,17 @@ Save frequently used HTTPQL queries as named presets.
 
 ```bash
 # List saved filters
-node caido-client.ts filters
+npx tsx caido-client.ts filters
 
 # Create filter preset
-node caido-client.ts create-filter "API Errors" --query 'req.path.cont:"/api/" AND resp.code.gte:400'
-node caido-client.ts create-filter "Auth Endpoints" --query 'req.path.regex:"/(login|auth|oauth)/"' --alias "auth"
+npx tsx caido-client.ts create-filter "API Errors" --query 'req.path.cont:"/api/" AND resp.code.gte:400'
+npx tsx caido-client.ts create-filter "Auth Endpoints" --query 'req.path.regex:"/(login|auth|oauth)/"' --alias "auth"
 
 # Update filter
-node caido-client.ts update-filter <filter-id> --query 'req.path.cont:"/api/" AND resp.code.gte:500'
+npx tsx caido-client.ts update-filter <filter-id> --query 'req.path.cont:"/api/" AND resp.code.gte:500'
 
 # Delete filter
-node caido-client.ts delete-filter <filter-id>
+npx tsx caido-client.ts delete-filter <filter-id>
 ```
 
 ---
@@ -252,23 +252,23 @@ Store testing variables that persist across sessions. Great for IDOR testing wit
 
 ```bash
 # List environments
-node caido-client.ts envs
+npx tsx caido-client.ts envs
 
 # Create environment
-node caido-client.ts create-env "IDOR-Test"
+npx tsx caido-client.ts create-env "IDOR-Test"
 
 # Set variables
-node caido-client.ts env-set <env-id> victim_user_id "user_456"
-node caido-client.ts env-set <env-id> attacker_token "eyJhbG..."
+npx tsx caido-client.ts env-set <env-id> victim_user_id "user_456"
+npx tsx caido-client.ts env-set <env-id> attacker_token "eyJhbG..."
 
 # Select active environment
-node caido-client.ts select-env <env-id>
+npx tsx caido-client.ts select-env <env-id>
 
 # Deselect environment
-node caido-client.ts select-env
+npx tsx caido-client.ts select-env
 
 # Delete environment
-node caido-client.ts delete-env <env-id>
+npx tsx caido-client.ts delete-env <env-id>
 ```
 
 ---
@@ -279,25 +279,25 @@ Create, list, and update security findings. Shows up in Caido's Findings tab.
 
 ```bash
 # List all findings
-node caido-client.ts findings
-node caido-client.ts findings --limit 50
+npx tsx caido-client.ts findings
+npx tsx caido-client.ts findings --limit 50
 
 # Get a specific finding
-node caido-client.ts get-finding <finding-id>
+npx tsx caido-client.ts get-finding <finding-id>
 
 # Create finding linked to a request
-node caido-client.ts create-finding <request-id> \
+npx tsx caido-client.ts create-finding <request-id> \
   --title "IDOR in user profile endpoint" \
   --description "Can access other users' profiles by changing ID parameter" \
   --reporter "rez0"
 
 # With deduplication key (prevents duplicates)
-node caido-client.ts create-finding <request-id> \
+npx tsx caido-client.ts create-finding <request-id> \
   --title "Auth bypass on /admin" \
   --dedupe-key "admin-auth-bypass"
 
 # Update finding
-node caido-client.ts update-finding <finding-id> \
+npx tsx caido-client.ts update-finding <finding-id> \
   --title "Updated title" \
   --description "Updated description"
 ```
@@ -310,10 +310,10 @@ Monitor and cancel background tasks (imports, exports, etc.).
 
 ```bash
 # List all tasks
-node caido-client.ts tasks
+npx tsx caido-client.ts tasks
 
 # Cancel a running task
-node caido-client.ts cancel-task <task-id>
+npx tsx caido-client.ts cancel-task <task-id>
 ```
 
 ---
@@ -322,10 +322,10 @@ node caido-client.ts cancel-task <task-id>
 
 ```bash
 # List all projects
-node caido-client.ts projects
+npx tsx caido-client.ts projects
 
 # Switch active project
-node caido-client.ts select-project <project-id>
+npx tsx caido-client.ts select-project <project-id>
 ```
 
 ---
@@ -334,10 +334,10 @@ node caido-client.ts select-project <project-id>
 
 ```bash
 # List hosted files
-node caido-client.ts hosted-files
+npx tsx caido-client.ts hosted-files
 
 # Delete hosted file
-node caido-client.ts delete-hosted-file <file-id>
+npx tsx caido-client.ts delete-hosted-file <file-id>
 ```
 
 ---
@@ -346,11 +346,11 @@ node caido-client.ts delete-hosted-file <file-id>
 
 ```bash
 # Check intercept status
-node caido-client.ts intercept-status
+npx tsx caido-client.ts intercept-status
 
 # Enable/disable interception
-node caido-client.ts intercept-enable
-node caido-client.ts intercept-disable
+npx tsx caido-client.ts intercept-enable
+npx tsx caido-client.ts intercept-disable
 ```
 
 ---
@@ -359,13 +359,13 @@ node caido-client.ts intercept-disable
 
 ```bash
 # Current user info
-node caido-client.ts viewer
+npx tsx caido-client.ts viewer
 
 # List installed plugins
-node caido-client.ts plugins
+npx tsx caido-client.ts plugins
 
 # Check Caido instance health (version, ready state)
-node caido-client.ts health
+npx tsx caido-client.ts health
 ```
 
 ---
@@ -511,59 +511,59 @@ Features not yet in the high-level SDK use `client.graphql.query()`/`client.grap
 
 ```bash
 # Find authenticated request
-node caido-client.ts search 'req.path.cont:"/api/user"' --limit 10
+npx tsx caido-client.ts search 'req.path.cont:"/api/user"' --limit 10
 
 # Create scope
-node caido-client.ts create-scope "IDOR-Test" --allow "*.target.com"
+npx tsx caido-client.ts create-scope "IDOR-Test" --allow "*.target.com"
 
 # Create environment for test data
-node caido-client.ts create-env "IDOR-Test"
-node caido-client.ts env-set <env-id> victim_id "user_999"
+npx tsx caido-client.ts create-env "IDOR-Test"
+npx tsx caido-client.ts env-set <env-id> victim_id "user_999"
 
 # Test IDOR by changing user ID
-node caido-client.ts edit <request-id> --path /api/user/999
+npx tsx caido-client.ts edit <request-id> --path /api/user/999
 
 # Mark as finding if it works
-node caido-client.ts create-finding <request-id> --title "IDOR on /api/user/:id"
+npx tsx caido-client.ts create-finding <request-id> --title "IDOR on /api/user/:id"
 
 # Export curl for PoC
-node caido-client.ts export-curl <request-id>
+npx tsx caido-client.ts export-curl <request-id>
 ```
 
 ### 2. Privilege Escalation Testing
 
 ```bash
-node caido-client.ts search 'req.path.cont:"/admin"' --limit 10
-node caido-client.ts edit <id> --path /api/admin/users --method GET
-node caido-client.ts edit <id> --method POST --body '{"role":"admin"}'
+npx tsx caido-client.ts search 'req.path.cont:"/admin"' --limit 10
+npx tsx caido-client.ts edit <id> --path /api/admin/users --method GET
+npx tsx caido-client.ts edit <id> --method POST --body '{"role":"admin"}'
 ```
 
 ### 3. Header Bypass Testing
 
 ```bash
-node caido-client.ts edit <id> --set-header "X-Forwarded-For: 127.0.0.1"
-node caido-client.ts edit <id> --set-header "X-Original-URL: /admin"
-node caido-client.ts edit <id> --remove-header "X-CSRF-Token"
+npx tsx caido-client.ts edit <id> --set-header "X-Forwarded-For: 127.0.0.1"
+npx tsx caido-client.ts edit <id> --set-header "X-Original-URL: /admin"
+npx tsx caido-client.ts edit <id> --remove-header "X-CSRF-Token"
 ```
 
 ### 4. Fuzzing with Automate
 
 ```bash
-node caido-client.ts create-automate-session <request-id>
+npx tsx caido-client.ts create-automate-session <request-id>
 # Configure payload markers and wordlists in Caido UI
-node caido-client.ts fuzz <session-id>
+npx tsx caido-client.ts fuzz <session-id>
 ```
 
 ### 5. Filter + Analyze Pattern
 
 ```bash
 # Save useful filters
-node caido-client.ts create-filter "API 4xx" --query 'req.path.cont:"/api/" AND resp.code.gte:400 AND resp.code.lt:500'
-node caido-client.ts create-filter "Large Responses" --query 'resp.len.gt:100000'
-node caido-client.ts create-filter "Sensitive Data" --query '"password" OR "secret" OR "api_key" OR "token"'
+npx tsx caido-client.ts create-filter "API 4xx" --query 'req.path.cont:"/api/" AND resp.code.gte:400 AND resp.code.lt:500'
+npx tsx caido-client.ts create-filter "Large Responses" --query 'resp.len.gt:100000'
+npx tsx caido-client.ts create-filter "Sensitive Data" --query '"password" OR "secret" OR "api_key" OR "token"'
 
 # Quick search using preset alias
-node caido-client.ts search 'preset:"API 4xx"' --limit 20
+npx tsx caido-client.ts search 'preset:"API 4xx"' --limit 20
 ```
 
 ---
@@ -591,8 +591,8 @@ node caido-client.ts search 'preset:"API 4xx"' --limit 20
 
 ## Error Handling
 
-- **Auth errors**: Run `node caido-client.ts auth-status` to check, re-setup with `node caido-client.ts setup <pat>`
-- **Connection refused**: Caido not running → `node caido-client.ts health`
+- **Auth errors**: Run `npx tsx caido-client.ts auth-status` to check, re-setup with `npx tsx caido-client.ts setup <pat>`
+- **Connection refused**: Caido not running → `npx tsx caido-client.ts health`
 - **InstanceNotReadyError**: Caido is starting up, wait and retry
 
 ## Related Skills
