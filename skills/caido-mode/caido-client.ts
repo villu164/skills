@@ -198,12 +198,12 @@ Usage:
     export CAIDO_URL=http://localhost:8080
 
 Examples:
-  npx tsx caido-client.ts search 'req.method.eq:"POST"' --limit 50
-  npx tsx caido-client.ts edit 12345 --path /api/admin --method POST
-  npx tsx caido-client.ts create-finding 12345 --title "IDOR" --reporter "rez0"
-  npx tsx caido-client.ts create-scope "Target" --allow "*.example.com"
-  npx tsx caido-client.ts replay-sessions --limit 10
-  npx tsx caido-client.ts health
+  caido search 'req.method.eq:"POST"' --limit 50
+  caido edit 12345 --path /api/admin --method POST
+  caido create-finding 12345 --title "IDOR" --reporter "rez0"
+  caido create-scope "Target" --allow "*.example.com"
+  caido replay-sessions --limit 10
+  caido health
 `);
 }
 
@@ -534,7 +534,7 @@ async function main() {
     case "setup": {
       const pat = args[1];
       if (!pat) {
-        console.error("Usage: npx tsx caido-client.ts setup <pat> [url]");
+        console.error("Usage: caido setup <pat> [url]");
         console.error("\nGet a PAT from: Caido → Settings → Developer → Personal Access Tokens");
         process.exit(1);
       }
