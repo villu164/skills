@@ -34,41 +34,9 @@ All traffic goes through Caido, so it appears in the UI for further analysis.
 2. **Use `edit` to modify just what you need** (path, method, body) while keeping all auth headers intact
 3. **Send it** - response comes back with full context preserved
 
-## Authentication Setup
-
-### Setup (One-Time)
-
-1. Open [Dashboard → Developer → Personal Access Tokens](https://docs.caido.io/dashboard/guides/create_pat.html)
-2. Create a new token
-3. Run:
-
-```bash
-caido setup <your-pat>
-
-# Non-default Caido instance
-caido setup <pat> http://192.168.1.100:8080
-
-# Or set env var instead
-export CAIDO_PAT=caido_xxxxx
-```
-
-The `setup` command validates the PAT via the SDK (which exchanges it for an access token), then saves both the PAT and the cached access token to `~/.claude/config/secrets.json`. Subsequent runs load the cached token directly, skipping the PAT exchange.
-
-### Check Status
-
-```bash
-caido auth-status
-```
-
-### How Auth Works
-
-The SDK uses a device code flow internally — the PAT auto-approves it and receives an access token + refresh token. A custom `SecretsTokenCache` (implementing the SDK's `TokenCache` interface) persists these tokens to secrets.json so they survive across CLI invocations.
-
-Auth resolution: `CAIDO_PAT` env var → `secrets.json` PAT → error with setup instructions
-
 ## CLI Tool
 
-Located at `~/.claude/skills/caido-mode/caido-client.ts`. All commands output JSON.
+Located at `caido`. All commands output JSON.
 
 ---
 
@@ -609,6 +577,7 @@ caido search 'preset:"API 4xx"' --limit 20
 - **Auth errors**: Run `caido auth-status` to check, re-setup with `caido setup <pat>`
 - **Connection refused**: Caido not running → `caido health`
 - **InstanceNotReadyError**: Caido is starting up, wait and retry
+- **Timeouts**: Caido request might hang if there is a `Missing \r\n\r\n terminator`. Use valid http requests
 
 ## Related Skills
 
